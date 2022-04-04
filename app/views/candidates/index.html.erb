@@ -8,20 +8,29 @@
 
 <table>
   <tr>
+    <td></td>
+    <td>Votes</td>
     <td>Name</td>
     <td>Party</td>
     <td>Age</td>
     <!-- <td>Politics</td> -->
-    <td>Action</td>
+    <!-- <td>Action</td> -->
   </tr>
 
 
   <% @candidates.each do |candidate| %>
   <tr>
+    <td><%= link_to "Vote", vote_candidate_path(candidate.id), method: "post" %></td>
+    <td><%= candidate.vote_logs.size %></td>
     <td><%= link_to candidate.name, candidate_path(candidate.id) %></a></td>
     <td><%= candidate.party %></td>
     <td><%= candidate.age %></td>
-    <td>Action</td>
+    <td>
+      <%= link_to "Update",edit_candidate_path(candidate.id)  %>
+      <%= link_to "Delete",candidate_path(candidate.id), method: "delete" ,data: {confirm: "Are you sure?!"}%>
+
+    </td>
   </tr>
+
   <% end %>
 </table>

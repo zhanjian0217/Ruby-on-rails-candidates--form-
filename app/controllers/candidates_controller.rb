@@ -4,8 +4,8 @@ class CandidatesController < ApplicationController
                                  #only:[:show, :edit, :update, :destroy, :vote]
 
   def index
-    # @candidates = Candidate.all
-    @candidates = Candidate.young_people
+    @candidates = Candidate.all
+    # @candidates = Candidate.young_people
     # @candidates = Candidate.where("age < 40")
   end
 
@@ -45,10 +45,13 @@ class CandidatesController < ApplicationController
   end
   
   def vote 
-
-    # VoteLog.create(candidate: @candidate, ip_address: request.remote_ip)
-    
+    # VoteLog.create(candidate: @candidate, ip_address: request.remote_ip) 
     @candidate.vote_logs.create(ip_address: request.remote_ip)
+
+    #send mail
+    # VoteMailer.vote_notify('gian910147@gmail.com').deliver
+    VoteMailJob.perform_later
+
     redirect_to "/candidates", notice: "Voted !!!!!"
   end
 
